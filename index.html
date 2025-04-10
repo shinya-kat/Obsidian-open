@@ -2,35 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Open in Obsidian</title>
   <script>
     window.onload = function () {
-      const params = new URLSearchParams(window.location.search);
-      const vault = params.get("vault");
-      const file = params.get("file");
-
-      if (!vault || !file) {
-        document.body.innerHTML = "<p>Missing vault or file parameter in the URL.</p>";
+      const query = window.location.search.substring(1); // Remove '?'
+      if (!query) {
+        document.body.innerHTML = "<p>No query provided.</p>";
         return;
       }
 
-      const encodedFile = encodeURIComponent(file).replace(/%2F/g, '%2F');
-      const obsidianUrl = `obsidian://open?vault=${encodeURIComponent(vault)}&file=${encodedFile}`;
+      const obsidianUrl = "obsidian://" + query;
 
-      // Redirect to Obsidian
+      // Try to open in Obsidian
       window.location.href = obsidianUrl;
 
-      // Fallback link in case redirect fails
+      // Fallback display
       document.body.innerHTML = `
-        <p>Trying to open Obsidian...</p>
-        <p>If nothing happens, <a href="${obsidianUrl}">click here</a>.</p>
+        <p>Opening in Obsidian...</p>
+        <p>If not redirected, <a href="${obsidianUrl}">click here</a>.</p>
       `;
     };
   </script>
 </head>
 <body>
-  <p>Loading...</p>
+  <p>Redirecting to Obsidian...</p>
 </body>
 </html>
